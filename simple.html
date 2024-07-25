@@ -1,0 +1,39 @@
+<script>
+  window.addEventListener("DOMContentLoaded", (event) => {
+    const input = window.document.querySelector("#searchBox");
+    input.addEventListener("input", logKey);
+  });
+
+  function logKey(e) {
+    console.log(e.target.value);
+  }
+</script>
+
+<div
+  style="
+    justify-content: center;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+  "
+>
+  <section>
+    <div class="text-start">
+      <span style="font-size: xx-large"> FIND A GOD DAMN POKEMON </span>
+    </div>
+    <div>
+      <input type="text" id="searchBox" placeholder="Search" />
+    </div>
+  </section>
+</div>
+<style>
+  body {
+    margin: 0;
+    background-color: tan;
+  }
+  input {
+    width: 20rem;
+    color: brown;
+  }
+</style>
