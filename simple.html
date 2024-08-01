@@ -1,39 +1,96 @@
+<!DOCTYPE html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      background-color: tan;
+    }
+    input {
+      width: 20rem;
+      color: brown;
+    }
+    #searchBox {
+      font-size: 20px;
+      height: 40px;
+    }
+    .pokemonName {
+      font-size: 30px;
+      font: bold;
+    }
+    .pokemonImage {
+      display: block;
+      margin-top: 10px;
+      width: 400px;
+      height: 400px;
+    }
+    .resultContainer {
+      justify-content: center;
+      display: flex;
+      height: 80px;
+      width: 100vw;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div
+    style="
+      justify-content: center;
+      display: flex;
+      height: 60vh;
+      width: 100vw;
+      align-items: center;
+    "
+  >
+    <section>
+      <div class="text-start">
+        <span style="font-size: xx-large"> Find a Pokemon </span>
+      </div>
+      <form>
+        <input type="text" id="searchBox" placeholder="Search" />
+      </form>
+    </section>
+  </div>
+</body>
 <script>
-  window.addEventListener("DOMContentLoaded", (event) => {
-    const input = window.document.querySelector("#searchBox");
-    input.addEventListener("input", logKey);
-  });
+  const input = window.document.querySelector("#searchBox");
+  input.addEventListener("input", logKey);
 
   function logKey(e) {
-    console.log(e.target.value);
+    fetchPokemon(e.target.value);
+  }
+
+  async function fetchPokemon(pokemonName) {
+    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      console.log(json);
+      displayPokemon(json);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  function displayPokemon(data) {
+    clearPokemon();
+    const result = document.createElement("div");
+    result.id = "result";
+    result.className = "resultContainer";
+    result.innerHTML = `
+      <h2 class= "pokemonName">${data.name}</h2>
+      <img class= "pokemonImage" src="${data.sprites.front_default}" alt="${data.name}" />`;
+    document.body.appendChild(result);
+  }
+
+  function clearPokemon() {
+    const previousPokemon = document.querySelector("#result");
+    if (previousPokemon) {
+      previousPokemon.remove();
+    }
   }
 </script>
-
-<div
-  style="
-    justify-content: center;
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    align-items: center;
-  "
->
-  <section>
-    <div class="text-start">
-      <span style="font-size: xx-large"> Find a Pokemon </span>
-    </div>
-    <div>
-      <input type="text" id="searchBox" placeholder="Search" />
-    </div>
-  </section>
-</div>
-<style>
-  body {
-    margin: 0;
-    background-color: tan;
-  }
-  input {
-    width: 20rem;
-    color: brown;
-  }
-</style>
